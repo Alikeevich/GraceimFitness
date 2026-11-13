@@ -545,3 +545,11 @@ p { margin: 0 0 1em; }
   html { scroll-behavior: auto; }
   .lock.is-open, .lock-reveal { animation: none; }
 }
+
+/* ---------- Документы ---------- */
+.legal h2 { font-size: 20px; font-weight: 600; margin: 40px 0 12px; letter-spacing: 0; }
+.legal p, .legal li { color: var(--ink-soft); }
+.legal ul { padding-left: 20px; margin: 0 0 16px; }
+.legal li { margin-bottom: 8px; }
+.legal a { color: var(--ink); text-underline-offset: 3px; cursor: pointer; }
+.age p a { color: #fff; text-underline-offset: 3px; }
