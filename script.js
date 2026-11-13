@@ -15,23 +15,73 @@ const CONFIG = {
   ],
 };
 
+// Подбор направления на главной: «Что ты хочешь изменить в своей жизни?»
+const CHOOSER = {
+  body: {
+    title: 'Камасутра LOVE-FIT',
+    text: 'Групповые тренировки под музыку: подвижность таза, гибкость, пластика и выносливость. Интимная гимнастика уже внутри каждой тренировки.',
+    price: 'от 40 000 ₸ за 8 занятий',
+    href: 'lovefit.html',
+    wa: 'Здравствуйте, Назина! Хочу прийти на тренировку Камасутра LOVE-FIT',
+  },
+  sensual: {
+    title: '«Чувственная»',
+    text: '8 встреч о женственности, желаниях, границах и искусстве близости. Телесные практики и психологическая работа в женском кругу.',
+    price: 'от 120 000 ₸ за 8 встреч',
+    href: 'chuvstvennaya.html',
+    wa: 'Здравствуйте, Назина! Хочу узнать о программе «Чувственная»',
+  },
+  health: {
+    title: 'Интимная гимнастика',
+    text: 'Осознанная работа с мышцами тазового дна, дыханием и диафрагмой. При жалобах — сначала консультация гинеколога.',
+    price: 'от 30 000 ₸ за занятие',
+    href: 'intimate.html',
+    wa: 'Здравствуйте, Назина! Хочу узнать об интимной гимнастике',
+  },
+  inner: {
+    title: 'Психология',
+    text: 'Консультации КПТ-психолога: измена, треугольники, зависимость от отношений, самооценка и внутренняя опора.',
+    price: 'от 20 000 ₸ за час',
+    href: 'psychology.html',
+    wa: 'Здравствуйте, Назина! Хочу записаться на психологическую консультацию',
+  },
+  career: {
+    title: 'Обучение тренеров',
+    text: 'Авторская методика Kamasutra Fitness, женское здоровье, психология и запуск своей практики. 6 недель, онлайн или офлайн.',
+    price: 'от 1 500 000 ₸',
+    href: 'training.html',
+    wa: 'Здравствуйте, Назина! Хочу узнать об обучении на тренера',
+  },
+};
+
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+const el = (tag, cls, text) => {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (text) node.textContent = text;
+  return node;
+};
+const waHref = (text) => `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`;
+
 // WhatsApp-ссылки с готовым текстом сообщения
-document.querySelectorAll('[data-wa]').forEach((el) => {
-  el.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(el.dataset.wa)}`;
-  el.target = '_blank';
-  el.rel = 'noopener';
-});
-document.getElementById('waText').textContent = CONFIG.phoneLabel;
-const tel = document.getElementById('telLink');
-tel.href = 'tel:+' + CONFIG.whatsapp;
-tel.textContent = CONFIG.phoneLabel;
-document.querySelectorAll('[data-ig]').forEach((a) => { a.href = CONFIG.instagram; });
-document.querySelectorAll('[data-ig-reviews]').forEach((a) => { a.href = CONFIG.instagramReviews; });
-document.getElementById('year').textContent = new Date().getFullYear();
+function bindWhatsApp(root = document) {
+  $$('[data-wa]', root).forEach((a) => {
+    a.href = waHref(a.dataset.wa);
+    a.target = '_blank';
+    a.rel = 'noopener';
+  });
+}
+bindWhatsApp();
+$$('[data-phone]').forEach((a) => { a.href = 'tel:+' + CONFIG.whatsapp; a.textContent = CONFIG.phoneLabel; });
+$$('[data-wa-label]').forEach((a) => { a.textContent = CONFIG.phoneLabel; });
+$$('[data-ig]').forEach((a) => { a.href = CONFIG.instagram; });
+$$('[data-ig-reviews]').forEach((a) => { a.href = CONFIG.instagramReviews; });
+$$('[data-year]').forEach((s) => { s.textContent = new Date().getFullYear(); });
 
 // Мобильное меню
-const burger = document.getElementById('burger');
-const nav = document.getElementById('nav');
+const burger = $('#burger');
+const nav = $('#nav');
 burger.addEventListener('click', () => {
   const open = nav.classList.toggle('is-open');
   burger.setAttribute('aria-expanded', open);
@@ -43,60 +93,87 @@ nav.addEventListener('click', (e) => {
   }
 });
 
-// Замочки с позициями
-const lockSvg = '<svg class="lock__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1a5 5 0 0 0-5 5v4H5v13h14V10h-2V6a5 5 0 0 0-5-5Zm-3 5a3 3 0 0 1 6 0v4H9V6Zm3 8a2 2 0 0 1 1 3.7V20h-2v-2.3A2 2 0 0 1 12 14Z"/></svg>';
-const locks = document.getElementById('locks');
-const reveal = document.getElementById('lockReveal');
-const pad = (n) => String(n).padStart(2, '0');
-
-document.getElementById('posCount').textContent = CONFIG.positions.length;
-document.getElementById('posCount2').textContent = CONFIG.positions.length;
-
-CONFIG.positions.forEach((name, i) => {
-  const btn = document.createElement('button');
-  btn.className = 'lock';
-  btn.type = 'button';
-  btn.setAttribute('aria-label', `Открыть позицию ${i + 1}`);
-  btn.innerHTML = `<span class="lock__n">${pad(i + 1)}</span>${lockSvg}<span class="lock__name">${name}</span>`;
-  btn.addEventListener('click', () => {
-    btn.classList.add('is-open');
-    locks.querySelectorAll('.is-current').forEach((b) => b.classList.remove('is-current'));
-    btn.classList.add('is-current');
-    document.getElementById('lockRevealN').textContent = `Позиция ${pad(i + 1)} открыта`;
-    document.getElementById('lockRevealName').textContent = name;
-    reveal.hidden = false;
-    reveal.style.animation = 'none';
-    void reveal.offsetWidth;
-    reveal.style.animation = '';
+// Замочки с позициями (страница LOVE-FIT)
+const locks = $('#locks');
+if (locks) {
+  const lockSvg = '<svg class="lock__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1a5 5 0 0 0-5 5v4H5v13h14V10h-2V6a5 5 0 0 0-5-5Zm-3 5a3 3 0 0 1 6 0v4H9V6Zm3 8a2 2 0 0 1 1 3.7V20h-2v-2.3A2 2 0 0 1 12 14Z"/></svg>';
+  const reveal = $('#lockReveal');
+  const pad = (n) => String(n).padStart(2, '0');
+  $$('[data-pos-count]').forEach((s) => { s.textContent = CONFIG.positions.length; });
+  CONFIG.positions.forEach((name, i) => {
+    const btn = el('button', 'lock');
+    btn.type = 'button';
+    btn.setAttribute('aria-label', `Открыть позицию ${i + 1}`);
+    btn.innerHTML = `<span class="lock__n">${pad(i + 1)}</span>${lockSvg}<span class="lock__name">${name}</span>`;
+    btn.addEventListener('click', () => {
+      btn.classList.add('is-open');
+      $$('.is-current', locks).forEach((b) => b.classList.remove('is-current'));
+      btn.classList.add('is-current');
+      $('#lockRevealN').textContent = `Позиция ${pad(i + 1)} открыта`;
+      $('#lockRevealName').textContent = name;
+      reveal.hidden = false;
+      reveal.style.animation = 'none';
+      void reveal.offsetWidth;
+      reveal.style.animation = '';
+    });
+    locks.appendChild(btn);
   });
-  locks.appendChild(btn);
-});
+}
+
+// Подбор направления (главная)
+const chooser = $('#chooser');
+if (chooser) {
+  const show = (key) => {
+    const c = CHOOSER[key];
+    $$('[data-choice]', chooser).forEach((b) => {
+      const on = b.dataset.choice === key;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-pressed', on);
+    });
+    $('#chooserTitle').textContent = c.title;
+    $('#chooserText').textContent = c.text;
+    $('#chooserPrice').textContent = c.price;
+    $('#chooserMore').href = c.href;
+    const wa = $('#chooserWa');
+    wa.dataset.wa = c.wa;
+    bindWhatsApp(chooser);
+  };
+  chooser.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-choice]');
+    if (b) show(b.dataset.choice);
+  });
+  show('body');
+}
 
 // Плашка 18+ (запоминаем ответ в браузере)
-const age = document.getElementById('age');
+const age = $('#age');
 let ageOk = false;
 try { ageOk = localStorage.getItem('age18') === '1'; } catch (e) {}
 if (!ageOk) age.hidden = false;
-document.getElementById('ageOk').addEventListener('click', () => {
+$('#ageOk').addEventListener('click', () => {
   age.hidden = true;
   try { localStorage.setItem('age18', '1'); } catch (e) {}
 });
 
-// Отзывы: карточки из reviews.js, фильтры, «показать ещё» и просмотр скриншота
-const reviewsList = document.getElementById('reviewsList');
-const reviewsMore = document.getElementById('reviewsMore');
-const shot = document.getElementById('shot');
-const shotImgs = document.getElementById('shotImgs');
-const REVIEWS_STEP = 6;
-let reviewsFilter = 'all';
-let reviewsShown = REVIEWS_STEP;
+// Отзывы: карточки из reviews.js в любом блоке [data-reviews]
+// data-type — направление (train, psy, live), data-limit — сколько показать сразу,
+// data-step — сколько добавлять по кнопке «Показать ещё» (только на странице отзывов)
+const shot = $('#shot');
+const shotImgs = $('#shotImgs');
 
-const el = (tag, cls, text) => {
-  const node = document.createElement(tag);
-  if (cls) node.className = cls;
-  if (text) node.textContent = text;
-  return node;
-};
+function openShot(r) {
+  shotImgs.replaceChildren(...r.shots.map((name, i) => {
+    const img = el('img');
+    img.src = `assets/reviews/rv-${name}.jpg`;
+    img.alt = `Скриншот отзыва${r.shots.length > 1 ? `, часть ${i + 1}` : ''}`;
+    img.loading = 'lazy';
+    return img;
+  }));
+  shot.showModal();
+  shot.scrollTop = 0;
+}
+$('#shotClose').addEventListener('click', () => shot.close());
+shot.addEventListener('click', (e) => { if (e.target === shot) shot.close(); });
 
 function reviewCard(r) {
   const card = el('article', 'review');
@@ -125,49 +202,40 @@ function reviewCard(r) {
   return card;
 }
 
-function renderReviews() {
-  const items = REVIEWS.filter((r) => reviewsFilter === 'all' || r.type === reviewsFilter);
-  reviewsList.replaceChildren(...items.slice(0, reviewsShown).map(reviewCard));
-  reviewsMore.hidden = items.length <= reviewsShown;
-  // «Читать полностью» только у текстов, которые не поместились
-  reviewsList.querySelectorAll('.review').forEach((card) => {
-    card._more.hidden = card._text.scrollHeight <= card._text.clientHeight + 2;
-  });
-}
+$$('[data-reviews]').forEach((list) => {
+  const step = Number(list.dataset.step) || 0;
+  let shown = Number(list.dataset.limit) || REVIEWS.length;
+  let type = list.dataset.type || 'all';
+  const moreBtn = list.parentElement.querySelector('[data-reviews-more]');
+  const filters = list.parentElement.querySelector('[data-reviews-filters]');
 
-function openShot(r) {
-  shotImgs.replaceChildren(...r.shots.map((name, i) => {
-    const img = el('img');
-    img.src = `assets/reviews/rv-${name}.jpg`;
-    img.alt = `Скриншот отзыва${r.shots.length > 1 ? `, часть ${i + 1}` : ''}`;
-    img.loading = 'lazy';
-    return img;
-  }));
-  shot.showModal();
-  shot.scrollTop = 0;
-}
+  const render = () => {
+    const items = REVIEWS.filter((r) => type === 'all' || r.type === type);
+    list.replaceChildren(...items.slice(0, shown).map(reviewCard));
+    if (moreBtn) moreBtn.hidden = items.length <= shown;
+    // «Читать полностью» только у текстов, которые не поместились
+    $$('.review', list).forEach((card) => {
+      card._more.hidden = card._text.scrollHeight <= card._text.clientHeight + 2;
+    });
+  };
 
-document.getElementById('reviewFilters').addEventListener('click', (e) => {
-  const btn = e.target.closest('[data-filter]');
-  if (!btn) return;
-  reviewsFilter = btn.dataset.filter;
-  reviewsShown = REVIEWS_STEP;
-  document.querySelectorAll('#reviewFilters [data-filter]').forEach((b) => {
-    b.classList.toggle('is-active', b === btn);
-    b.setAttribute('aria-selected', b === btn);
+  if (moreBtn) moreBtn.addEventListener('click', () => { shown += step; render(); });
+  if (filters) filters.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-filter]');
+    if (!btn) return;
+    type = btn.dataset.filter;
+    shown = Number(list.dataset.limit) || REVIEWS.length;
+    $$('[data-filter]', filters).forEach((b) => {
+      b.classList.toggle('is-active', b === btn);
+      b.setAttribute('aria-pressed', b === btn);
+    });
+    render();
   });
-  renderReviews();
+  render();
 });
-reviewsMore.addEventListener('click', () => {
-  reviewsShown += REVIEWS_STEP;
-  renderReviews();
-});
-document.getElementById('shotClose').addEventListener('click', () => shot.close());
-shot.addEventListener('click', (e) => { if (e.target === shot) shot.close(); });
-renderReviews();
 
 // Нижняя панель на телефоне — появляется после первого экрана
-const bar = document.getElementById('stickyBar');
+const bar = $('#stickyBar');
 const onScroll = () => bar.classList.toggle('is-shown', window.scrollY > window.innerHeight * 0.7);
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
