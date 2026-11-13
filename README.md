@@ -22,6 +22,11 @@ Framework Preset — **Other**, Build Command и Output Directory оставит
 `hero.jpg` (главный кадр), `about.jpg` (обо мне), `lovefit.jpg`, `chuvstvennaya.jpg`, `intimate.jpg`, `psychology.jpg`, `training.jpg`.
 Лучше вертикальные кадры около 1200 px по длинной стороне.
 
+Сейчас стоят **временные фото с Unsplash** (бесплатная лицензия, можно в коммерческих целях) — заменить на фото Назины:
+`hero` — photo-1788204996840, `about` — photo-1706192048459, `lovefit` — photo-1597586594276,
+`chuvstvennaya` — photo-1518893063132, `intimate` — photo-1518708909080, `psychology` — photo-1739980153522,
+`training` — photo-1747239685045.
+
 ## Где что менять
 
 - **WhatsApp, телефон, Instagram, позиции LOVE-FIT** — объект `CONFIG` в начале `script.js`.
