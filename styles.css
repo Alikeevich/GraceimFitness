@@ -139,7 +139,9 @@ p { margin: 0 0 1em; }
   content: attr(data-label); position: absolute; left: 16px; right: 16px; bottom: 12px;
   font-size: 13px; color: var(--muted);
 }
-.ph img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; }
+.ph img, .ph video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.ph--video { background: var(--dark); }
+@media (max-width: 899px) { .page-hero__photo.ph--video { --ar: 4 / 5; } }
 
 /* ---------- Hero (главная) ---------- */
 .hero { padding: 24px 0 48px; }
@@ -553,3 +555,12 @@ p { margin: 0 0 1em; }
 .legal li { margin-bottom: 8px; }
 .legal a { color: var(--ink); text-underline-offset: 3px; cursor: pointer; }
 .age p a { color: #fff; text-underline-offset: 3px; }
+
+/* ---------- Галерея «Атмосфера» ---------- */
+.gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.gallery .ph { --ar: 3 / 4; border-radius: var(--radius); }
+.gallery__video { grid-column: 1 / -1; --ar: 9 / 16 !important; max-height: 640px; }
+@media (min-width: 900px) {
+  .gallery { grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: auto auto; gap: 16px; }
+  .gallery__video { grid-column: 1; grid-row: 1 / span 2; max-height: none; height: 100%; aspect-ratio: auto; }
+}

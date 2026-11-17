@@ -239,3 +239,8 @@ const bar = $('#stickyBar');
 const onScroll = () => bar.classList.toggle('is-shown', window.scrollY > window.innerHeight * 0.7);
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
+
+// Видео без звука играют по кругу; при «уменьшить движение» остаются на первом кадре
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  $$('video[autoplay]').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); });
+}
