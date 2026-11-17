@@ -564,3 +564,23 @@ p { margin: 0 0 1em; }
   .gallery { grid-template-columns: 1.2fr 1fr 1fr; grid-template-rows: auto auto; gap: 16px; }
   .gallery__video { grid-column: 1; grid-row: 1 / span 2; max-height: none; height: 100%; aspect-ratio: auto; }
 }
+
+/* ---------- Путь неделя за неделей ---------- */
+.journey { background: var(--panel); border-radius: var(--radius); padding: 32px 20px; }
+@media (min-width: 768px) { .journey { padding: 48px; } }
+.journey__sub { color: var(--red); font-weight: 500; margin-bottom: 32px; }
+.timeline { list-style: none; padding: 0; margin: 0; }
+.timeline li { position: relative; display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding-bottom: 28px; }
+.timeline li:last-child { padding-bottom: 0; }
+.timeline li:not(:last-child)::before {
+  content: ""; position: absolute; left: 23px; top: 48px; bottom: 0; width: 2px; background: var(--red-soft);
+}
+.timeline__n {
+  width: 48px; height: 48px; border-radius: 50%; background: var(--red); color: #fff;
+  display: grid; place-items: center; font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.timeline__n--wide { font-size: 14px; }
+.timeline__week { color: var(--red); font-size: 20px; font-weight: 600; margin: 8px 0 4px; }
+.timeline h3 { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+.timeline li p:last-child { color: var(--ink-soft); margin: 0; }
+.journey__note { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--line); text-align: center; font-size: 14px; color: var(--muted); }
